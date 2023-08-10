@@ -1,0 +1,38 @@
+<div class='menu'>
+    <form [formGroup]="form">
+        <div class="field">
+            <label for="orientation">Orientación</label>
+            <select name="orientation" id="orientation" formControlName="orientation"
+                (change)="handleOrientation($event)">
+                <option *ngFor="let item of orientation_inputs" [value]="item.value">{{item.label}}</option>
+            </select>
+        </div>
+        <div class="field">
+            <h3>Etiquetas</h3>
+            <div *ngFor="let item of tag_inputs">
+                <input type="checkbox" [id]="item.value" [name]="item.value" [value]="item.label" formArrayName="tags"
+                    (change)="onCheckboxChange($event, item)" />
+                <label [for]="item.value">{{item.label}}</label>
+            </div>
+        </div>
+    </form>
+    <ng-container *ngIf="selected_tag">
+        <form [formGroup]="tags_form">
+            <h3>Propiedades para: {{selected_tag.tag_label}}</h3>
+            <div class="field">
+                <label for="font">Fuente</label>
+                <select name="font" id="font" formControlName="font">
+                    <option *ngFor="let item of font_inputs" [value]="item.value">{{item.label}}</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="font_size">Tamaño de fuente</label>
+                <select name="font_size" id="font_size" formControlName="font_size">
+                    <option [value]="item" *ngFor="let item of font_values">{{item}}</option>
+                </select>
+            </div>
+        </form>
+    </ng-container>
+
+    <button class="button-save" (click)="save()">Guardar</button>
+</div>
