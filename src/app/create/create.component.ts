@@ -1,23 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  CdkDragDrop,
-  CdkDrag,
-  CdkDropList,
-  CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 import { MenuComponent } from "../menu/menu.component";
-import { Font, Orientation, TagData, TagForm, Tags } from "../interfaces/interfaces";
+import { Font, Orientation, TagData } from "../interfaces/interfaces";
+import domToImage from "dom-to-image";
+import * as print from "print-js";
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
   standalone: true,
   imports: [
-    CdkDropListGroup,
-    CdkDropList,
     CdkDrag,
     CommonModule,
     MenuComponent
@@ -25,6 +19,7 @@ import { Font, Orientation, TagData, TagForm, Tags } from "../interfaces/interfa
 })
 export class CreateComponent {
 
+  @ViewChild('pdfCard') pdfCard!: ElementRef<HTMLElement>;
   tags: TagData[] = [];
   selected_tag!: TagData;
   orientation: Orientation = "start";
@@ -32,19 +27,6 @@ export class CreateComponent {
   showHeader: boolean = false;
   showFooter: boolean = false;
   height_value: string = "100%";
-
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }
 
   getTags(tags: TagData[]) {
     this.tags = tags;
@@ -77,4 +59,26 @@ export class CreateComponent {
   handleSelection(item: TagData) {
     this.selected_tag = item;
   }
+
+  printPdf(el: any) {
+    print({
+      printable: el,
+      type: "image",
+      showModal: true, // Optional
+      modalMessage: "Printing...", // Optional
+      style: "img { width: 100%;}",
+    });
+  }
+
+  async exportPDF() {
+    let el = undefined;
+    await domToImage.toPng(this.pdfCard.nativeElement)
+      .then((dataUrl) => el = dataUrl)
+      .catch((error) => console.error('oops, something went wrong!', error))
+    if (el) {
+      console.log(el)
+      this.printPdf(el);
+    }
+  }
+
 }
