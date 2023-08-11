@@ -8,16 +8,16 @@
             [style.height]="height_value">
             <ng-container *ngFor="let item of tags">
                 <ng-container *ngIf="orientation === 'free' ">
-                    <div *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'"
+                    <div class="card-box" *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'"
                         cdkDragBoundary=".card-content" cdkDrag (cdkDragStarted)="handleSelection(item)">
                         <span *ngIf="item.tag !== 'qr' && item.tag !== 'v_card'" [style.font-family]="item.font"
-                            [style.font-size]="item.font_size + 'px'" class="card-box">{{item.tag_label}}</span>
+                            [style.font-size]="item.font_size + 'px'">{{item.tag_label}}</span>
                         <img *ngIf="item.tag === 'qr' || item.tag === 'v_card'" [style.width]="item.font_size + '%'"
                             src="assets/images/qr.png" alt="QR image">
                     </div>
                 </ng-container>
                 <ng-container *ngIf="orientation !== 'free'">
-                    <div *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'" class="card-box_no-free"
+                    <div class="card-box_no-free" *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'"
                         (click)="handleSelection(item)">
                         <span *ngIf="item.tag !== 'qr' && item.tag !== 'v_card'" [style.font-family]="item.font"
                             [style.font-size]="item.font_size + 'px'">{{item.tag_label}}</span>
