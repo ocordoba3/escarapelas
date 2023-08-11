@@ -29,7 +29,9 @@ export class CreateComponent {
   selected_tag!: TagData;
   orientation: Orientation = "start";
   font: Font = "Lato";
-
+  showHeader: boolean = false;
+  showFooter: boolean = false;
+  height_value: string = "100%";
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -46,6 +48,22 @@ export class CreateComponent {
 
   getTags(tags: TagData[]) {
     this.tags = tags;
+    this.showHeader = Boolean(tags.find((el) => el.tag === "header_image"));
+    this.showFooter = Boolean(tags.find((el) => el.tag === "footer_image"));
+    this.height_value = this.calculateHeightBox();
+  }
+
+  calculateHeightBox() {
+    if (!this.showHeader && !this.showFooter) {
+      return "100%";
+    }
+    if ((this.showHeader && !this.showFooter) || (!this.showHeader && this.showFooter)) {
+      return "80%";
+    }
+    if (this.showHeader && this.showFooter) {
+      return "62%";
+    }
+    return "100%";
   }
 
   setOrientation(orientation: Orientation) {

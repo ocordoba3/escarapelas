@@ -39,6 +39,8 @@ export class MenuComponent implements OnInit {
   ];
 
   tag_inputs: Options<Tags>[] = [
+    { label: "Imagen encabezado", value: "header_image" },
+    { label: "Imagen footer", value: "footer_image" },
     { label: "Nombre", value: "name" },
     { label: "Apellidos", value: "last_name" },
     { label: "Identificación", value: "personal_id" },
@@ -62,8 +64,8 @@ export class MenuComponent implements OnInit {
   ngOnChanges(): void {
     if (this.selected_tag) {
       this.tags_form = this.fb.group<TagForm>({
-        font: new FormControl("Roboto", { nonNullable: true }),
-        font_size: new FormControl(10, { nonNullable: true }),
+        font: new FormControl(this.selected_tag.font, { nonNullable: true }),
+        font_size: new FormControl(this.selected_tag.font_size, { nonNullable: true }),
         tag: new FormControl(this.selected_tag.tag, { nonNullable: true }),
         tag_label: new FormControl(this.selected_tag.tag_label, { nonNullable: true }),
       })
@@ -77,7 +79,7 @@ export class MenuComponent implements OnInit {
       selected_tags.push(new FormControl(element.value));
       this.tags_data.push({
         font: "Roboto",
-        font_size: 10,
+        font_size: 36,
         tag: item.value,
         tag_label: item.label
       })
@@ -92,6 +94,12 @@ export class MenuComponent implements OnInit {
 
   handleOrientation(event: Event) {
     this.orientation.emit((event.target as HTMLInputElement).value as Orientation);
+  }
+
+  tagFormChange(event: Event, key: "font" | "font_size") {
+    const val = (event.target as HTMLInputElement).value;
+    this.tags_data = this.tags_data.map((el) => el.tag === this.selected_tag.tag ? ({ ...el, [key]: val }) : el);
+    this.tags_to_render.emit(this.tags_data);
   }
 
   save() {

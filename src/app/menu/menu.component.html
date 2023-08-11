@@ -19,15 +19,19 @@
     <ng-container *ngIf="selected_tag">
         <form [formGroup]="tags_form">
             <h3>Propiedades para: {{selected_tag.tag_label}}</h3>
-            <div class="field">
+            <div class="field" *ngIf="selected_tag.tag !== 'qr' && selected_tag.tag !== 'v_card'">
                 <label for="font">Fuente</label>
-                <select name="font" id="font" formControlName="font">
+                <select name="font" id="font" formControlName="font" (change)="tagFormChange($event, 'font')">
                     <option *ngFor="let item of font_inputs" [value]="item.value">{{item.label}}</option>
                 </select>
             </div>
             <div class="field">
-                <label for="font_size">Tamaño de fuente</label>
-                <select name="font_size" id="font_size" formControlName="font_size">
+                <label *ngIf="selected_tag.tag !== 'qr' && selected_tag.tag !== 'v_card'" for="font_size">Tamaño de
+                    fuente (px)</label>
+                <label *ngIf="selected_tag.tag === 'qr' || selected_tag.tag === 'v_card'" for="font_size">Tamaño
+                    (%)</label>
+                <select name="font_size" id="font_size" formControlName="font_size"
+                    (change)="tagFormChange($event, 'font_size')">
                     <option [value]="item" *ngFor="let item of font_values">{{item}}</option>
                 </select>
             </div>

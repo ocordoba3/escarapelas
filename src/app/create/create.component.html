@@ -3,24 +3,30 @@
     </app-menu>
 
     <div class="card-container">
-        <img src="assets/images/esri_logo.png" alt="Esri Logo">
-        <div class="card-content" [style.text-align]="orientation !== 'free' ? orientation : ''">
-
-            <ng-container *ngIf="orientation === 'free' ">
-                <div [style.font-family]="font" class="card-box" *ngFor="let item of tags"
-                    cdkDragBoundary=".card-content" cdkDrag (cdkDragStarted)="handleSelection(item)">
-                    {{item.tag_label}}
-                </div>
+        <img class="header_image" *ngIf="showHeader" src="assets/images/esri_logo.png" alt="Esri Logo">
+        <div class="card-content" [style.text-align]="orientation !== 'free' ? orientation : ''"
+            [style.height]="height_value">
+            <ng-container *ngFor="let item of tags">
+                <ng-container *ngIf="orientation === 'free' ">
+                    <div *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'"
+                        cdkDragBoundary=".card-content" cdkDrag (cdkDragStarted)="handleSelection(item)">
+                        <span *ngIf="item.tag !== 'qr' && item.tag !== 'v_card'" [style.font-family]="item.font"
+                            [style.font-size]="item.font_size + 'px'" class="card-box">{{item.tag_label}}</span>
+                        <img *ngIf="item.tag === 'qr' || item.tag === 'v_card'" [style.width]="item.font_size + '%'"
+                            src="assets/images/qr.png" alt="QR image">
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="orientation !== 'free'">
+                    <div *ngIf="item.tag !== 'header_image' && item.tag !== 'footer_image'" class="card-box_no-free"
+                        (click)="handleSelection(item)">
+                        <span *ngIf="item.tag !== 'qr' && item.tag !== 'v_card'" [style.font-family]="item.font"
+                            [style.font-size]="item.font_size + 'px'">{{item.tag_label}}</span>
+                        <img *ngIf="item.tag === 'qr' || item.tag === 'v_card'" [style.width]="item.font_size + '%'"
+                            src="assets/images/qr.png" alt="QR image">
+                    </div>
+                </ng-container>
             </ng-container>
-
-            <ng-container *ngIf="orientation !== 'free'">
-                <div [style.font-family]="font" class="card-box_no-free" *ngFor="let item of tags"
-                    (click)="handleSelection(item)">
-                    {{item.tag_label}}
-                </div>
-            </ng-container>
-
         </div>
-        <img src="assets/images/logo_end.png" alt="Esri Logo End">
+        <img class="footer_image" *ngIf="showFooter" src="assets/images/logo_end.png" alt="Esri Logo End">
     </div>
 </div>

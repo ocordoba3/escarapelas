@@ -33,4 +33,4 @@ export type Font = "Lato" | "Montserrat" | "Open Sans" | "Poppins" | "Roboto";
 
 export type Orientation = "start" | "center" | "end" | "free";
 
-export type Tags = "name" | "last_name" | "personal_id" | "company" | "role" | "id" | "qr" | "v_card";
+export type Tags = "header_image" | "footer_image" | "name" | "last_name" | "personal_id" | "company" | "role" | "id" | "qr" | "v_card";
