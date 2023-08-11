@@ -1,8 +1,10 @@
+<button type='button' (click)="exportPDF()">Imprimir</button>
+
 <div class='container'>
     <app-menu [selected_tag]="selected_tag" (tags_to_render)="getTags($event)" (orientation)="setOrientation($event)">
     </app-menu>
 
-    <div class="card-container">
+    <div class="card-container" #pdfCard>
         <img class="header_image" *ngIf="showHeader" src="assets/images/esri_logo.png" alt="Esri Logo">
         <div class="card-content" [style.text-align]="orientation !== 'free' ? orientation : ''"
             [style.height]="height_value">
